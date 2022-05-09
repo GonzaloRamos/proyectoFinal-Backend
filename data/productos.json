@@ -1,0 +1,12 @@
+[
+  {
+    "id": "42310e48-e052-475b-b2dc-ff3ae423a8f5",
+    "timeStamp": 1643256357137,
+    "nombre": "Tablet",
+    "descripcion": "Ideal para diseño grafico",
+    "codigo": 365,
+    "fotoUrl": "https://images.samsung.com/is/image/samsung/p6pim/ar/sm-t500nzaearo/gallery/ar-galaxy-tab-a7-t500-sm-t500nzaearo-332818011?$720_576_PNG$",
+    "precio": 1000,
+    "stock": 123
+  }
+]

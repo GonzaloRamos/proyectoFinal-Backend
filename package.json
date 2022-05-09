@@ -1,0 +1,35 @@
+{
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "connect-mongo": "^4.6.0",
+    "ejs": "^3.1.7",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "log4js": "^6.4.6",
+    "mongoose": "^6.3.1",
+    "multer": "^1.4.4",
+    "nodemailer": "^6.7.4",
+    "passport": "^0.5.2",
+    "passport-local": "^1.0.0",
+    "socket.io": "^4.4.1",
+    "twilio": "^3.76.1",
+    "uuid": "^8.3.2"
+  },
+  "name": "desafio-filesystenm",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "start-dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Gonzalo Ramos",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "dotenv": "^16.0.0",
+    "eslint": "^8.14.0",
+    "nodemon": "^2.0.15"
+  }
+}

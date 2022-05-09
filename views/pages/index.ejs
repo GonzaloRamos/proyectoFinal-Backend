@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+  <%- include ("../partials/head.ejs") %>
+  <body>
+    <!-- Navigation-->
+    <% if (user) {%> <%- include("../partials/nav.ejs", {user, carrito}) %> <% } else {%>
+    <%- include("../partials/nav.ejs") %> <% } %>
+
+    <!-- Header-->
+    <%- include ("../partials/header.ejs") %>
+    <!-- Section-->
+    <section class="py-5">
+      <div class="container px-4 px-lg-5 mt-5">
+        <div
+          class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+        >
+          <% products.forEach(product => { %> <%-
+          include("../partials/cards/productCard.ejs", {product: product, carrito}) %> <%
+          }) %>
+        </div>
+      </div>
+
+      <% if (carrito) { %>
+
+      <div>
+        <h5>carrito provisorio</h5>
+        <ul>
+          <% carrito.products.forEach(element => { %>
+          <li><%= element.name %></li>
+
+          <% }) %>
+        </ul>
+      </div>
+      <% } else { } %>
+    </section>
+    <!-- Footer-->
+    <%- include("../partials/footer.ejs") %> <%- include("../partials/scripts.ejs") %>
+  </body>
+</html>

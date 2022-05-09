@@ -1,0 +1,20 @@
+DATABASE_TO_USE = <Base de datos a utilizar : mongoDB>
+MONGO_PASS = <contraseña de mongo atlas>
+MONGO_CLUSTER = <nombre del cluster en mongo>
+MONGO_DATABASE = <la base de datos donde se escribe los datos.>
+
+SERVER_MODE = <cluster || fork>
+
+
+PORT = <port number>
+
+
+
+MAIL_SERVICE = <servicio de mail para enviar. Implementado solo gmail.>
+MAIL_PORT = <mail service port>
+MAIL_PASS = <mail service app pass>
+MAIL_USER = <user mail se usa para autenticarse al servicio con node mailer>
+MAIL_ADMIN = <mail del administrador. Donde van a llegar las notificaciones>
+
+TWILIO_ACCOUNT_SID = <SID de twilio>
+TWILIO_AUTH_TOKEN = <TWILIO TOKEN>
