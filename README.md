@@ -10,24 +10,7 @@ Ejecutar `npm start` encender el servidor. Los variables de entorno necesarias s
 
 Todas las rutas que empiezan con `"/api"` son las que se encargan de hacer los procesos del modelo de negocio con la base de datos.
 
-### Vistas
-
-`"/"` Esta ruta principal muestra el página index.ejs que se encarga de:
-
-1. Si el usuario esta autenticado (passport local). Si esta autenticado accede al Dao de usuarios para obtener mediante ID el ususario y poder mostrar la información. Además obtiene el carrito asociado al ususario
-2. Si el ususario es administrador va a poder tener acceso al panel de administrador donde allí puede gestionar ususarios y productos. En este caso, no busca un carrito asociado al administrador.
-3. Si no esta autenticado accede a los productos mediante el dao de productos y lo muestra en pantalla. Si se quiere agregar un producto al carrito en este caso se lo redirecciona a la pantalla de login.
-
-`"/login-register"` Aca el usuario puede generar tanto un login como un registrarse en el sitio. El registro hace uso del controlador `"/api/user/auth/register"` enviando los datos al Dao de ususario.
-
-`"/admin-panel/:action"` Esta ruta tiene acceso solo si el ususario es administrador. Si lo es lo devuelve a la ruta principal `"/"`. El params action representa en que se va a trabajar ya sea ususarios o productos. Las dos posibilidades son "users" y "products".
-
-- Action === "users" hace uso de Dao de usuarios para obtener todos los ususarios. Por el momento desde esta vista se puede solo borrar un usuario mediante su api `"/api/user/delete"`
-- Action === "products" hace uso de Dao de productos para obtener todos los productos. Por el momento desde esta vista solo se puede borrar un producto mediante su api `"/api/products/delete"`.
-
-### APIs
-
-#### Productos
+## Productos
 
 **Base URL** `"/api/productos"`
 
@@ -51,9 +34,10 @@ Como opcional puede recibir:
   **PUT** `"/:id"` Recibe el ID y actualiza el producto recibido mediante el body.
   Su respuesta es en formato JSON
 
-  **DELETE** `/delete` Recibe mediante el body el id o algun filtro para encontrar un producto y eliminarlo. Se recomienda usar el ID. Redirecciona a alguna vista por que ya esta implementado dentro del modelo HTML ON WIRE
+  **DELETE** `/delete` Recibe mediante el body el id o algun filtro para encontrar un producto y eliminarlo. Se recomienda usar el ID.
+  La propiedad debe ser \_id : productID
 
-#### Usuarios
+## Usuarios
 
 **Base URL** `"/api/user"`
 
@@ -74,13 +58,13 @@ Como opcional puede recibir:
 
 - "photo": default imagen genérica de usuario.
 
-Como respuesta redirecciona a la página `"/login-register"` para que el ususario se autentique. Esta implementado en HTML ON WIRE.
+Se le asocia un carrito al momento de crearse
 
-**POST** `"/auth/login"` Autentica el ususario en la app. Usa como dependencia passport local. Recibe en el body "username" y "password". Como respuesta redirecciona a la página principal `"/"`.
+**POST** `"/auth/login"` Autentica el ususario en la app. Usa como dependencia passport local. Recibe en el body "username" y "password".
 
 **POST** `"/auth/logout"` Des-loggea al ususario. De hacer esto se encarga passport local.
 
-#### Carrito
+## Carrito
 
 Todas las rutas excepto `"/:id/purchase"` devuelven JSON por que todavia no fueron implementadas en HTML ON WIRE.
 
@@ -101,7 +85,3 @@ Base URL `"/api/carrito"`
 ## Variables de entorno.
 
 En el archivo envSample.txt se pueden ver las necesarias para que la aplicación funcione como se espera.
-
-## Prueba con artillery
-
-Se hizo pruebas en modo cluster y fork con el usuario ya autenticado sobre la ruta principal `"/"` de vistas por que ese controlador es quien se encarga de hacer una petición a la base de datos para traer todos los productos. Los resultados estan en sus respectivos txt result_cluster.txt y result_fork.txt. Se puede ver ahi que la media de respuesta en modo cluster es mucho mas alta.
