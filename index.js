@@ -5,7 +5,7 @@ const cluster = require("cluster");
 const numCPUs = require("os").cpus().length;
 const {log4js, SERVER} = require("./src/config/config.index");
 
-if (SERVER.MODE === "cluster") {
+if (SERVER.MODE.toLowerCase().trim() === "cluster") {
   if (cluster.isPrimary) {
     log4js.consoleLogger.info(`Primary ${process.pid} is running`);
 

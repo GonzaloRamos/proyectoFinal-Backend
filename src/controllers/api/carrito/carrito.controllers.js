@@ -16,7 +16,7 @@ const createCarritoController = async (req, res) => {
   }
 };
 
-const deleteAll = async (req, res) => {
+const deleteAllCarritoController = async (req, res) => {
   try {
     const {id} = req.params;
     if (!id) {
@@ -34,7 +34,7 @@ const deleteAll = async (req, res) => {
   }
 };
 
-const getAll = async (req, res) => {
+const getAllCarritoController = async (req, res) => {
   try {
     const {id} = req.params;
     if (!id) {
@@ -51,7 +51,7 @@ const getAll = async (req, res) => {
   }
 };
 
-const addProduct = async (req, res) => {
+const addProductCarritoController = async (req, res) => {
   try {
     const {id, idProducto} = req.params;
 
@@ -61,16 +61,17 @@ const addProduct = async (req, res) => {
         message: `No se proporciono ningun id`,
       });
     }
-    const result = await carritoDao.addProduct(id, idProducto);
-    console.log(result);
-    res.redirect("/");
+    const [result, addedProduct] = await carritoDao.addProduct(id, idProducto);
+    res
+      .status(200)
+      .json({msg: "Se agrego el producto con exito", result, producto: addedProduct});
   } catch (error) {
     const errorObject = {error: STATUS.BAD_REQUEST, message: error.message};
     res.status(STATUS.INTERNAL_ERROR.code).json(errorObject.message);
   }
 };
 
-const deleteProduct = async (req, res) => {
+const deleteProductCarritoController = async (req, res) => {
   try {
     const {id, idProducto} = req.params;
     if (!id && !idProducto) {
@@ -89,7 +90,7 @@ const deleteProduct = async (req, res) => {
   }
 };
 
-const purchase = async (req, res) => {
+const purchaseCarritoController = async (req, res) => {
   try {
     const {id} = req.params;
     if (!id) {
@@ -98,19 +99,23 @@ const purchase = async (req, res) => {
         message: `No se proporciono ningun id`,
       });
     }
-    await carritoDao.purchaseCarrito(id);
-    res.redirect("/");
+    const [result, purchasedProducts, user] = await carritoDao.purchaseCarrito(id);
+    res
+      .status(200)
+      .json({purchasedProducts, user, msg: `Se realizo la compra con exito`, result});
   } catch (error) {
     const errorObject = {error: STATUS.BAD_REQUEST, message: error.message};
     res.status(STATUS.INTERNAL_ERROR.code).json(errorObject.message);
   }
 };
 
+//TODO: Falta las rutas   /:id  -  /:id/productos/:idProducto
+
 module.exports = {
   createCarritoController,
-  deleteAll,
-  getAll,
-  addProduct,
-  deleteProduct,
-  purchase,
+  deleteAllCarritoController,
+  getAllCarritoController,
+  addProductCarritoController,
+  deleteProductCarritoController,
+  purchaseCarritoController,
 };

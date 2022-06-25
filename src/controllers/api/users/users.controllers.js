@@ -43,7 +43,19 @@ const createUserController = async (req, res) => {
  */
 
 const loginController = (req, res) => {
-  res.status(200).json({msg: "Usuario autenticado con exito"});
+  const user = req.user;
+  if (!user) {
+    return res.status(400).json({error: "No se encontro información en la petición"});
+  }
+
+  res.status(200).json({
+    msg: "Usuario autenticado con exito",
+    id: user._id,
+    email: user.email,
+    username: user.username,
+    name: user.name,
+    lastname: user.lastname,
+  });
 };
 
 /**
@@ -53,8 +65,21 @@ const loginController = (req, res) => {
  * @param {Object} res - Express response object
  */
 const logoutController = (req, res) => {
+  const user = req.user;
+  if (!user) {
+    return res
+      .status(400)
+      .json({error: "No se puede cerrar sesión sin estar autenticado"});
+  }
   req.logout();
-  res.status(200).json({msg: "Usuario deslogueado con exito"});
+  return res.status(200).json({
+    msg: "Usuario deslogueado con exito",
+    id: user._id,
+    email: user.email,
+    username: user.username,
+    name: user.name,
+    lastname: user.lastname,
+  });
 };
 
 /**
@@ -70,9 +95,20 @@ const deleteUserController = async (req, res) => {
       throw new Error("No se encontro información en la petición");
     }
 
-    //TODO: Traer el usuario de la base de datos antes de eliminarlo para poder mostrar su información en los mensajes correspondientes.
+    const user = await userDao.getUserById(req.body._id);
+    const carrito = await carritoDao.getCarritoByUser(user._id);
+    if (carrito) {
+      await carritoDao.deleteCarrito(carrito._id);
+    }
     await userDao.deleteUser(req.body);
-    res.status(200).json({msg: "Se elimino el usuario con exito"});
+    res.status(200).json({
+      msg: "Se elimino el usuario con exito",
+      id: user._id,
+      email: user.email,
+      username: user.username,
+      name: user.name,
+      lastname: user.lastname,
+    });
   } catch (error) {
     log4js.errorLogger.error(error.message);
     res.status(404).json({error: error.message});

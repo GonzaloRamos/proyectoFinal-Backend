@@ -1,9 +1,9 @@
 const {log4js} = require("../../../config/config.index");
 
 //Transpoter de nodemailer
-const transporter = require("../../../models/mailer/nodemailer");
+const NodeMailerClient = require("../../mailer/NodeMailerClient");
 //Cliente de twilio
-const client = require("../../twilio/twilio");
+const TwilioClient = require("../../twilio/TwilioClient");
 //Clase principal de mongoDB con los métodos de accesso a la base de datos
 const MongoDB = require("../../mongo/MongoDB");
 //Dao de productos
@@ -50,7 +50,8 @@ class Carrito extends MongoDB {
       if (!carrito) {
         throw new Error("No se encontro el carrito");
       }
-      return carrito.products;
+      const {products} = await this.populateCarrito(carrito, {path: "products"});
+      return products;
     } catch (error) {
       log4js.errorLogger.error(error.message);
       throw new Error(error.message);
@@ -62,7 +63,7 @@ class Carrito extends MongoDB {
    * @param {String} id - Carrito id
    * @param {String} idProducto - Producto id
    * @throws {Error} - Si no se encontro el carrito o el producto
-   * @returns {Object} - Object information update
+   * @returns {Array} - Primera posicion, el carrito actualizado. Segunda posicion, el producto agregado.
    */
   async addProduct(id, idProducto) {
     try {
@@ -80,7 +81,7 @@ class Carrito extends MongoDB {
         throw new Error("No se encontro un carrito");
       }
 
-      return result;
+      return [result, product];
     } catch (error) {
       log4js.errorLogger.error(error.message);
       throw new Error(error.message);
@@ -161,11 +162,13 @@ class Carrito extends MongoDB {
    */
   async getCarritoByUser(userId) {
     try {
+      //Instancio el dao para saber si el ususario pasado por parámetro existe
       const userDao = new User();
       const user = await userDao.getUserById(userId);
       if (!user) {
         throw new Error("No se encontro un usuario");
       }
+      //Ahora si busco el carrito asociado
       const carrito = await this.getByFilter({user: user._id});
       if (!carrito) {
         throw new Error("No se encontro un carrito");
@@ -184,7 +187,7 @@ class Carrito extends MongoDB {
    * @throws {Error} - Si no se encontro el carrito
    * @throws {Error} - Si no se encontro el usuario
    * @throws {Error} - Si no se encontro el producto
-   * @returns
+   * @returns {Array} - [0] - Objeto del carrito [1] - Productos comprados [2] - Usuario que realizo la compra
    */
   async purchaseCarrito(id) {
     try {
@@ -195,10 +198,13 @@ class Carrito extends MongoDB {
       }
 
       //Cambio su estado a comprado y borro productos
-      const result = await this.updateOne(carrito._id, {purchased: true, products: []});
+      const carritoResult = await this.updateOne(carrito._id, {
+        purchased: true,
+        products: [],
+      });
 
       //Borro el carrito de compras
-      if (!result.acknowledged || result.modifiedCount === 0) {
+      if (!carritoResult.acknowledged || carritoResult.modifiedCount === 0) {
         throw new Error("No se pudo verificar la compra");
       }
 
@@ -207,39 +213,37 @@ class Carrito extends MongoDB {
       const {products} = await this.populateCarrito(carrito, {path: "products"});
 
       //Envio el correo
-      const mailOptions = {
-        from: "Proyecto final coderhouse Gonzalo Ramos",
-        to: process.env.MAIL_ADMIN,
-        subject: `Nuevo pedido de ${user.name}`,
-        html: `<p style="color: black;"> Su compra esta en proceso de verificacion. Usuario: ${
+      const nodeMailerClient = new NodeMailerClient();
+      nodeMailerClient.setSubject(`Nuevo pedido de ${user.name}`);
+      nodeMailerClient.setHtml(
+        `<p style="color: black;"> Su compra esta en proceso de verificacion. Usuario: ${
           user.name
         }, Email: ${user.email}. Los productos a comprar son: ${products
           .map((product) => {
             return product.name;
           })
-          .join(", ")}</p>`,
-      };
-      await transporter.sendMail(mailOptions);
+          .join(", ")}</p>`
+      );
+      await nodeMailerClient.sendMail();
 
-      //Envio el whatsapp
-      const twilioOpt = {
-        body: `Su compra esta en proceso de verificacion. Usuario: ${user.name}, Email: ${
+      //Instancio el cliente de twilio
+      const twilioClient = new TwilioClient();
+      //Armo el body del whatsapp
+      twilioClient.setBody(
+        `Su compra esta en proceso de verificacion. Usuario: ${user.name}, Email: ${
           user.email
         }. Los productos a comprar son: ${carrito.products
           .map((product) => {
             return product.name;
           })
-          .join(", ")}`,
-        mediaUrl: [
-          "https://www.investingmoney.biz/public/img/art/xl/18012019161021Twilio-IoT.jpg",
-        ],
-        from: "whatsapp:+14155238886", //puede requerir iniciar el sandbox desde twilio
-        to: `whatsapp:+549${user.phone}`,
-      };
-      await client.messages.create(twilioOpt);
+          .join(", ")}`
+      );
+      //Paso el numero de telefono del cliente.
+      twilioClient.setTo(user.phone);
+      await twilioClient.sendMessage();
 
       //Devuelvo el resultado de actualizar el carrito anterior
-      return result;
+      return [carritoResult, products, user];
     } catch (error) {
       log4js.errorLogger.error(error.message);
       throw new Error(error.message);

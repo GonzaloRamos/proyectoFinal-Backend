@@ -1,5 +1,5 @@
 const {log4js} = require("../../../config/config.index");
-const transporter = require("../../../models/mailer/nodemailer");
+const NodeMailerClient = require("../../mailer/NodeMailerClient");
 const Utils = require("../../../utils/Utils");
 const ApiUtils = require("../../../utils/Utils.api");
 const MongoDB = require("../../mongo/MongoDB");
@@ -48,18 +48,15 @@ class User extends MongoDB {
    */
   async sendMail(user) {
     try {
-      const mailOptions = {
-        from: "Node Js Server",
-        to: process.env.MAIL_ADMIN,
-        subject: "Nuevo registro",
-        html: `<p style="color: black;"> id: ${user.id}
-        Nombre y apellido: ${user.name} ${user.lastname} 
-        edad:${user.age} 
-        email: ${user.email} 
-        address: ${user.address} 
-        tel: ${user.phone}</p>`,
-      };
-      const mail = transporter.sendMail(mailOptions);
+      const nodeMailerClient = new NodeMailerClient();
+      nodeMailerClient.setSubject("Nuevo registro");
+      nodeMailerClient.setHtml(`<p style="color: black;"> id: ${user.id}
+      Nombre y apellido: ${user.name} ${user.lastname} 
+      edad:${user.age} 
+      email: ${user.email} 
+      address: ${user.address} 
+      tel: ${user.phone}</p>`);
+      const mail = nodeMailerClient.sendMail();
       return mail;
     } catch (error) {
       log4js.errorLogger.error(error.message);

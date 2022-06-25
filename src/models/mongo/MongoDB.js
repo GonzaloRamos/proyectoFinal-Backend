@@ -14,8 +14,8 @@ class MongoDB {
 
   /**
    * Recibe información en formato objeto y la guarda en la base de datos
-   * @param {Object} data Data to create
-   * @returns {Object} Document created
+   * @param {Object} data - Información a guardar
+   * @returns {Object} - Documento creado
    */
   async create(data) {
     try {
@@ -27,7 +27,7 @@ class MongoDB {
 
   /**
    * Busca todos los documentos disponibles en la base de datos en la colección que se especifique en el constructor.
-   * @returns {Array} Array of documents
+   * @returns {Array} - Array de documentos
    */
   async getAll() {
     try {
@@ -40,9 +40,9 @@ class MongoDB {
 
   /**
    *
-   * @param {String} id - Document id
+   * @param {String} id - Id del documento
    * @throws {Error} - Si no se encontro el documento
-   * @returns {Object} - Document
+   * @returns {Object} - Documento
    */
   async getById(id) {
     try {
@@ -56,8 +56,8 @@ class MongoDB {
   /**
    * Se le pasa un objeto con fltros y devuelve todos los docuemntos que coincidan con esos filtros.
    *
-   * @param {Object} filter - Filter Object
-   * @returns {Array} - Array of documents
+   * @param {Object} filter - Objeto con el filtrado
+   * @returns {Array} - Array de documentos
    */
   async getByFilter(filter) {
     try {
@@ -71,9 +71,9 @@ class MongoDB {
   /**
    * Actualiza un documento en la base de datos.
    * Busca el documento por el id y lo actualiza con los datos que se le pasan.
-   * @param {String} id - Document id
-   * @param {Object} data - Data to update
-   * @returns {Object} - Object information update
+   * @param {String} id - Id del document
+   * @param {Object} data - Data para hacer update
+   * @returns {Object} - Objeto con la información del proceso de actualizacion.
    */
   async updateOne(id, data) {
     try {

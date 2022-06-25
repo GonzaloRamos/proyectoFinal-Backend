@@ -41,18 +41,18 @@ Como opcional puede recibir:
 
 **Base URL** `"/api/user"`
 
-**DELETE** `"/delete"` Elimina un usuario de la base de datos. Recibe el ID mediante el body de la petición. Redirecciona a la página desde la que se lo llamo por que ya esta implementado dentro del modelo HTML ON WIRE.
+**DELETE** `"/delete"` Elimina un usuario de la base de datos. Recibe el parámetro \_id mediante el body de la petición. Cuando se elimina el ususario, tambien se elimina el carrito asociado al mismo.
 
 **POST** `"/auth/register"` Registra un usuario en la base de datos. Los campos obligatorios son:
 
-- "name"
-- "lastname"
-- "age"
-- "username" && unique
-- "email" && unique
-- "address"
-- "phone"
-- "password"
+- "name" String
+- "lastname" String
+- "age" Integer
+- "username" && unique String
+- "email" && unique String
+- "address" String
+- "phone" Integer
+- "password" STRING
 
   Los campos opcionales:
 
@@ -66,11 +66,9 @@ Se le asocia un carrito al momento de crearse
 
 ## Carrito
 
-Todas las rutas excepto `"/:id/purchase"` devuelven JSON por que todavia no fueron implementadas en HTML ON WIRE.
-
 Base URL `"/api/carrito"`
 
-**POST** `"/"` Crea un carrito. Se le debe pasar por el body un parámetro \_id con el valor de id del usuario por que el carrito creado es asociado a un usuario. Los valores del carrito son creados por el servidor.
+**POST** `"/"` Crea un carrito. Se le debe pasar por el body el parámetro \_id correspondiente al usuario para que el carrito sea asociado al mismo. Los valores del carrito son creados por el servidor.
 
 **POST** `"/:id/productos/idProducto"` Agrega un producto al carrito de compras.
 

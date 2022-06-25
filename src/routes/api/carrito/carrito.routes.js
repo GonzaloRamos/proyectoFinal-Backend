@@ -1,25 +1,25 @@
 const {Router} = require("express");
 const {
-  addProduct,
+  addProductCarritoController,
   createCarritoController,
-  deleteAll,
-  deleteProduct,
-  getAll,
-  purchase,
+  deleteAllCarritoController,
+  deleteProductCarritoController,
+  getAllCarritoController,
+  purchaseCarritoController,
 } = require("../../../controllers/api/carrito/carrito.controllers");
 
 const routeCarrito = Router();
 
 routeCarrito.post("/", createCarritoController);
 
-routeCarrito.delete("/:id?", deleteAll);
+routeCarrito.delete("/:id", deleteAllCarritoController);
 
-routeCarrito.delete("/:id?/productos/:idProducto", deleteProduct);
+routeCarrito.delete("/:id/productos/:idProducto", deleteProductCarritoController);
 
-routeCarrito.get("/:id?/productos", getAll);
+routeCarrito.get("/:id/productos", getAllCarritoController);
 
-routeCarrito.post("/:id?/productos/:idProducto", addProduct);
+routeCarrito.post("/:id/productos/:idProducto", addProductCarritoController);
 
-routeCarrito.post("/:id/purchase", purchase);
+routeCarrito.post("/:id/purchase", purchaseCarritoController);
 
 module.exports = routeCarrito;
