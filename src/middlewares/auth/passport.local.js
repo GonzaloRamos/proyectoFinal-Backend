@@ -1,6 +1,6 @@
 const passport = require("passport");
 const {log4js} = require("../../config/config.index");
-const ApiUtils = require("../../utils/Utils.api");
+const Utils = require("../../utils/Utils");
 const LocalStrategy = require("passport-local").Strategy;
 const {userDao} = require("../../models/dao/index");
 
@@ -10,7 +10,7 @@ passport.use(
     userDao
       .getUserByFilter({username})
       .then((user) => {
-        if (!ApiUtils.isValidPassword(user, password)) {
+        if (!Utils.isValidPassword(user, password)) {
           const errorMessage = "Contraseña incorrecta";
           return done(errorMessage, false);
         }

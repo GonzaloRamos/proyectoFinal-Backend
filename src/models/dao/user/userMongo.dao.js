@@ -1,7 +1,6 @@
 const {log4js} = require("../../../config/config.index");
 const NodeMailerClient = require("../../mailer/NodeMailerClient");
 const Utils = require("../../../utils/Utils");
-const ApiUtils = require("../../../utils/Utils.api");
 const MongoDB = require("../../mongo/MongoDB");
 const UserSchema = require("../../mongo/schemas/User.schema");
 
@@ -27,7 +26,7 @@ class User extends MongoDB {
       const photoPath = file ? file.path.replace("public/", "") : undefined;
 
       //Encripto la contraseña
-      const encryptPass = ApiUtils.encryptPassword(user.password);
+      const encryptPass = Utils.encryptPassword(user.password);
       //Completo el objeto de usuario
       const userComplete = {...user, photo: photoPath, password: encryptPass};
       //Creo el usuario

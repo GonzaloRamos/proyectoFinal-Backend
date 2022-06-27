@@ -1,6 +1,6 @@
-const {log4js} = require("../../../config/config.index");
-const {userDao, carritoDao} = require("../../../models/dao");
-const Utils = require("../../../utils/Utils");
+const {log4js} = require("../../config/config.index");
+const {userDao, carritoDao} = require("../../models/dao");
+const Utils = require("../../utils/Utils");
 /**
  * Controller para la creación de un usuario.
  * En este mismo momento se le crea un carrito asociado al usuario.

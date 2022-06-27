@@ -1,6 +1,6 @@
-const STATUS = require("../../../config/constants/api.constants");
-const Utils = require("../../../utils/Utils");
-const {productDao} = require("../../../models/dao/index");
+const STATUS = require("../../config/constants/api.constants");
+const Utils = require("../../utils/Utils");
+const {productDao} = require("../../models/dao/index");
 
 /**
  * Busca todos los productos

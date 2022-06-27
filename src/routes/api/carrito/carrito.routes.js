@@ -6,7 +6,7 @@ const {
   deleteProductCarritoController,
   getAllCarritoController,
   purchaseCarritoController,
-} = require("../../../controllers/api/carrito/carrito.controllers");
+} = require("../../../controllers/carrito/carrito.controllers");
 
 const routeCarrito = Router();
 

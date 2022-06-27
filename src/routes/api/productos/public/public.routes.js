@@ -2,7 +2,7 @@ const {Router} = require("express");
 const {
   getAll,
   getById,
-} = require("../../../../controllers/api/productos/productos.controllers");
+} = require("../../../../controllers/productos/productos.controllers");
 const routeProductosPublic = Router();
 
 routeProductosPublic.get("/", getAll);

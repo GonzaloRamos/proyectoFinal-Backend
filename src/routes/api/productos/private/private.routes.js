@@ -3,7 +3,7 @@ const {
   addProduct,
   updateProduct,
   deleteProduct,
-} = require("../../../../controllers/api/productos/productos.controllers");
+} = require("../../../../controllers/productos/productos.controllers");
 const MulterUpload = require("../../../../middlewares/multer/multer.upload");
 const upload = new MulterUpload("products").upload();
 

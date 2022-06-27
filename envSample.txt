@@ -3,12 +3,9 @@ MONGO_PASS = <contraseña de mongo atlas>
 MONGO_CLUSTER = <nombre del cluster en mongo>
 MONGO_DATABASE = <la base de datos donde se escribe los datos.>
 
-SERVER_MODE = <cluster || fork>
-
+SERVER_MODE = <cluster> Por default toma el servidor como fork.
 
 PORT = <port number>
-
-
 
 MAIL_SERVICE = <servicio de mail para enviar. Implementado solo gmail.>
 MAIL_PORT = <mail service port>

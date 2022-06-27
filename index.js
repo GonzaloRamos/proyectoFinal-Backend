@@ -15,7 +15,17 @@ if (SERVER.MODE.toLowerCase().trim() === "cluster") {
     }
 
     cluster.on("exit", (worker, code, signal) => {
-      log4js.consoleLogger.info(`worker ${worker.process.pid} died`);
+      if (signal) {
+        log4js.consoleLogger.info(
+          `worker ${worker.process.pid} was killed by signal: ${signal}`
+        );
+      } else if (code !== 0) {
+        log4js.consoleLogger.info(
+          `worker ${worker.process.pid} exited with error code: ${code}`
+        );
+      } else {
+        log4js.consoleLogger.info("worker success!");
+      }
     });
   } else {
     server.listen(SERVER.PORT, () => {

@@ -1,7 +1,7 @@
-const {log4js} = require("../../../config/config.index");
+const {log4js} = require("../../config/config.index");
 
-const STATUS = require("../../../config/constants/api.constants");
-const {carritoDao} = require("../../../models/dao/index");
+const STATUS = require("../../config/constants/api.constants");
+const {carritoDao} = require("../../models/dao/index");
 
 //Este controlador no esta incoporador a las rutas de las páginas. Devuelven json con los datos se puede probar con postman.
 
@@ -108,8 +108,6 @@ const purchaseCarritoController = async (req, res) => {
     res.status(STATUS.INTERNAL_ERROR.code).json(errorObject.message);
   }
 };
-
-//TODO: Falta las rutas   /:id  -  /:id/productos/:idProducto
 
 module.exports = {
   createCarritoController,

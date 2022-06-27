@@ -1,9 +1,7 @@
 const userRoutes = require("express").Router();
 
 //Import controller
-const {
-  deleteUserController,
-} = require("../../../controllers/api/users/users.controllers");
+const {deleteUserController} = require("../../../controllers/users/users.controllers");
 
 //Middleware de autenticación
 const apiAuth = require("../../../middlewares/auth/auth.user");

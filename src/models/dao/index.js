@@ -11,6 +11,13 @@ if (DATABASE_TO_USE === "mongoDB") {
   productDao = new ProductDao();
   carritoDao = new CarritoDao();
   userDao = new UserDao();
+} else {
+  const CarritoDao = require("./carrito/carritoFs.dao");
+  const ProductDao = require("./productos/productosFs.dao");
+  const UserDao = require("./user/userMongo.dao");
+  productDao = new ProductDao();
+  carritoDao = new CarritoDao();
+  userDao = new UserDao();
 }
 
 module.exports = {carritoDao, productDao, userDao};
